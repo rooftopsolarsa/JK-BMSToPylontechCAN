@@ -312,7 +312,7 @@ void printCurrent5CharacterRightAlignedOnLCD() {
 }
 
 /*
- * Print 3 characters 2.4 or 0.45
+ * Print 3 characters 2.4 or .45
  */
 void printVoltageDifference3CharactersOnLCD() {
     uint16_t tBatteryToFullDifference10Millivolt = JKComputedData.BatteryFullVoltage10Millivolt
@@ -518,13 +518,18 @@ void printCapacityInfoOnLCD() {
             if (JKComputedCapacity[i].Capacity != 0) {
                 myLCD.setCursor(0, i);
                 if (tDisplayDeltaVoltages) {
-                    snprintf_P(sStringBuffer, LCD_COLUMNS + 1, PSTR("%1u.%1u->%1u.%1umV %3u|%3uAh"),
+                    snprintf_P(sStringBuffer, LCD_COLUMNS + 1, PSTR("%1u.%1u->%1u.%1umV %3u %3uAh"),
                             JKComputedCapacity[i].Start100MilliVoltToFull / 10, JKComputedCapacity[i].Start100MilliVoltToFull % 10,
                             JKComputedCapacity[i].End100MilliVoltToFull / 10, JKComputedCapacity[i].End100MilliVoltToFull % 10,
                             JKComputedCapacity[i].Capacity, JKComputedCapacity[i].TotalCapacity);
                 } else {
-                    snprintf_P(sStringBuffer, LCD_COLUMNS + 1, PSTR("%2d%%->%2d%%  %3u|%3uAh"), JKComputedCapacity[i].StartSOC,
-                            JKComputedCapacity[i].EndSOC, JKComputedCapacity[i].Capacity, JKComputedCapacity[i].TotalCapacity);
+                    snprintf_P(sStringBuffer, LCD_COLUMNS + 1, PSTR("%2d%%->%2d%% "), JKComputedCapacity[i].StartSOC,
+                            JKComputedCapacity[i].EndSOC);
+                    myLCD.print(sStringBuffer);
+                    // If we have 100% as SOC value, we end up one column later, so we start at fixed position here
+                    myLCD.setCursor(9, i);
+                    snprintf_P(sStringBuffer, LCD_COLUMNS + 1, PSTR("  %3u %3uAh"), JKComputedCapacity[i].Capacity,
+                            JKComputedCapacity[i].TotalCapacity);
                 }
                 myLCD.print(sStringBuffer);
             }
@@ -604,13 +609,16 @@ void printBigInfoOnLCD() {
     }
     bigNumberLCD.setBigNumberCursor((LCD_COLUMNS - 1) - tColumnsRequiredForString, 0);
     bigNumberLCD.print(sStringBuffer);
-// Print units
+
+    // Print units
     myLCD.setCursor(19, UNITS_ROW_FOR_BIG_INFO - 1);
     myLCD.print(tKiloWattChar);
     myLCD.setCursor(19, UNITS_ROW_FOR_BIG_INFO);
     myLCD.print('W');
 
-// Bottom row: Max temperature, current and the actual states
+    /*
+     * Bottom row: Max temperature, current, voltage difference and the actual states
+     */
     myLCD.setCursor(0, 3);
     myLCD.print(JKComputedData.TemperatureMaximum);
     myLCD.print(F("\xDF "));
@@ -619,8 +627,7 @@ void printBigInfoOnLCD() {
     printCurrent5CharacterRightAlignedOnLCD();
 
     myLCD.setCursor(11, 3);
-
-    printVoltageDifference3CharactersOnLCD();
+    myLCD.print(((float) (JKComputedData.BatteryFullVoltage10Millivolt - JKComputedData.BatteryVoltage10Millivolt)) / 100.0, 2);
     myLCD.print('V');
 
     myLCD.setCursor(16, 3);

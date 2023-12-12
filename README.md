@@ -56,7 +56,7 @@ If CAN communications breaks, the inverter may use different values for controll
 # Screenshots
  The screenshots are taken from the [Wokwi example](https://wokwi.com/projects/371657348012321793) with `STANDALONE_TEST` enabled and therefore may contain random data.
 
-| Big Info page  with difference voltage between<br/>actual and 100% voltage and display of<br/>"C"harging "D"ischarging and "B"alancing<br/>active flags | Overview page |
+| Big Info page with:<br/>- SOC and Power<br/>- Maximum of 3 Temperatures and Ampere in/out<br/>- Difference between maximum and current battery voltage<br/>- Display of  "C"harging "D"ischarging and "B"alancing active flags | Overview page |
 | :-: | :-: |
 | ![Big info page](https://github.com/ArminJo/JK-BMSToPylontechCAN/blob/main/pictures/BigInfoPage.png) | ![Overview page](https://github.com/ArminJo/JK-BMSToPylontechCAN/blob/main/pictures/OverviewPage.png) |
 | Cell info page with maximum and minimum indicators |  Overview / Error page with start of error message in first line |

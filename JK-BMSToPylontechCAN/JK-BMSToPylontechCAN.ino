@@ -46,6 +46,8 @@
  *  Based on https://github.com/syssi/esphome-jk-bms and https://github.com/maxx-ukoo/jk-bms2pylontech
  *  Tested with SUN-5K-SG03LP1-EU
  *
+ *  Available as Wokwi example https://wokwi.com/projects/371657348012321793
+ *
  *  Copyright (C) 2023  Armin Joachimsmeyer
  *  Email: armin.joachimsmeyer@gmail.com
  *
@@ -152,7 +154,7 @@ char sStringBuffer[40]; // for "Store computed capacity" line and LCD rows
 //#define SPI_CS_PIN                 10 // Must be specified before #include "MCP2515_TX.hpp"
 #endif
 
-//#define STANDALONE_TEST
+//#define STANDALONE_TEST           // If activated, fixed BMS data is sent to CAN bus and displayed on LCD.
 
 //#define TIMING_TEST
 #define TIMING_TEST_PIN             7
